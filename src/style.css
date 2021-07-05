@@ -1,0 +1,48 @@
+/* body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+.dnd {
+  list-style: none;
+  width: 500px;
+  margin: auto;
+}
+.dnd li {
+  cursor: grab;
+  background-color: black;
+  color: #fff;
+  padding: 10px;
+  margin-bottom: 1px;
+  transition: all 0.2s;
+}
+.dnd li:hover {
+  background-color: #003366 !important;
+}
+.dnd li:active {
+  cursor: grabbing;
+} */
+
+.dragcard {
+  padding: 30px;
+  background-color: aquamarine;
+  width: 120px;
+  text-align: center;
+  margin: 20px auto;
+  cursor: grab;
+}
+.dragcard:active {
+  cursor: grabbing;
+}
+.dragzone {
+  background-color: cornflowerblue;
+}
+.dragzone h1,
+.dropzone h1 {
+  text-align: center;
+  padding-top: 20px;
+}
+.dropzone {
+  background-color: dodgerblue;
+}
