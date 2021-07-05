@@ -62,7 +62,7 @@ const App = () => {
     <div className="container">
       <div className="row">
         <div className="col-md-4"></div>
-        <div className="col-md-4">
+        <div className="col-md-4 mt-4">
           <h1>HTML Drag & Drop</h1>
         </div>
         <div className="col-md-4"></div>
