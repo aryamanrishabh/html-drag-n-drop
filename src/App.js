@@ -2,59 +2,142 @@ import React, { useState } from "react";
 import ReactDOM from "react-dom";
 
 const App = () => {
-  const [dragItem, setDragItem] = useState();
-  const [list, setList] = useState([
-    "The Call Of Ktulu",
-    "For Whom The Bell Tolls",
-    "The Day That Never Comes",
-    "The Memory Remains",
-    "Confusion",
-    "Moth Into Flame",
-    "The Outlaw Torn",
-    "No Leaf Clover",
-    "Halo on Fire",
-  ]);
+  const [tasks, setTasks] = useState([]);
+  const initState = [
+    { name: "HTML", category: "wip" },
+    { name: "CSS", category: "wip" },
+    { name: "JS", category: "wip" },
+  ];
+  const [todo, setTodo] = useState("");
+  let wip = [];
+  let complete = [];
 
-  const handleDragStart = (index) => {
-    setDragItem(index);
+  const resetState = () => {
+    setTasks(initState);
+    setTodo("");
   };
 
-  const handleDragLeave = (e) => {
-    e.target.style.backgroundColor = "black";
+  const updateState = (task) => {
+    const tempstate = [...tasks];
+    let newTask = { name: task, category: "wip" };
+    tempstate.push(newTask);
+    setTasks(tempstate);
   };
 
-  const handleDrop = (e) => {
-    e.target.style.backgroundColor = "black";
+  const onDragStart = (event, id) => {
+    console.log("dragstart:", id);
+    event.dataTransfer.setData("id", id);
   };
 
-  const handleDragEnter = (e, index) => {
-    e.target.style.backgroundColor = "#336699";
-    const newList = [...list];
-    const item = newList[dragItem];
-    newList.splice(dragItem, 1);
-    newList.splice(index, 0, item);
-    setDragItem(index);
-    setList(newList);
+  const onDrop = (event, cat) => {
+    let id = event.dataTransfer.getData("id");
+
+    let new_tasks = tasks.filter((task) => {
+      if (task.name === id) {
+        task.category = cat;
+      }
+      return task;
+    });
+
+    setTasks(new_tasks);
   };
+
+  tasks.forEach((t) => {
+    const arr = t.category === "wip" ? wip : complete;
+    arr.push(
+      <div
+        onDragStart={(e) => {
+          onDragStart(e, t.name);
+        }}
+        draggable="true"
+        key={t.name}
+        className="dragcard"
+      >
+        {t.name}
+      </div>
+    );
+  });
 
   return (
-    <ul className="dnd">
-      {list &&
-        list.map((item, index) => (
-          <li
-            draggable
-            key={index}
-            onDragStart={() => handleDragStart(index)}
-            onDragEnter={(e) => handleDragEnter(e, index)}
-            onDragLeave={(e) => handleDragLeave(e)}
-            onDrop={(e) => handleDrop(e)}
-            onDragOver={(e) => e.preventDefault()}
+    <div className="container">
+      <div className="row">
+        <div className="col-md-4"></div>
+        <div className="col-md-4">
+          <h1>HTML Drag & Drop</h1>
+        </div>
+        <div className="col-md-4"></div>
+      </div>
+      <div className="row">
+        <div className="col-md-6 offset-md-3 my-4"></div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+          className="form-control bg-dark"
+        >
+          <label className="text-white" htmlFor="todo">
+            Add new tasks
+          </label>
+          <input
+            id="todo"
+            value={todo}
+            onChange={(e) => {
+              setTodo(e.target.value);
+            }}
+            placeholder="Enter task"
+            className="form-control"
+          />
+          <button
+            onClick={() => {
+              updateState(todo);
+            }}
+            className="btn btn-primary mt-2"
           >
-            {item}
-          </li>
-        ))}
-    </ul>
+            Enter
+          </button>
+          <button onClick={resetState} className="btn btn-danger mt-2 ml-2">
+            Reset
+          </button>
+        </form>
+      </div>
+      <div className="row mt-2">
+        <div className="col-md-6 offset-md-3">
+          <h1 className="text-center">
+            {complete.length === tasks.length ? "All tasks completed!" : ""}
+          </h1>
+        </div>
+      </div>
+      <div className="row my-4">
+        <div
+          className="dragzone col-md-4"
+          onDrop={(e) => onDrop(e, "wip")}
+          onDragOver={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <h1 className="text-white">Work in progress</h1>
+          {wip.map((w) => (
+            <div>{w}</div>
+          ))}
+        </div>
+        <div className="col-md-4"></div>
+        <div
+          className="dropzone col-md-4"
+          onDrop={(e) => onDrop(e, "complete")}
+          onDragOver={(e) => {
+            e.preventDefault();
+          }}
+        >
+          <h1 className="text-white">Completed</h1>
+          {complete.length > 0 ? (
+            complete.map((c) => <div>{c}</div>)
+          ) : (
+            <span className="text-white">Drop here</span>
+          )}
+        </div>
+      </div>
+    </div>
   );
 };
 
-//ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(<App />, document.getElementById("root"));
