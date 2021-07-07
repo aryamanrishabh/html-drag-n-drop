@@ -3,11 +3,7 @@ import ReactDOM from "react-dom";
 
 const App = () => {
   const [tasks, setTasks] = useState([]);
-  const initState = [
-    { name: "HTML", category: "wip" },
-    { name: "CSS", category: "wip" },
-    { name: "JS", category: "wip" },
-  ];
+  const initState = [];
   const [todo, setTodo] = useState("");
   let wip = [];
   let complete = [];
