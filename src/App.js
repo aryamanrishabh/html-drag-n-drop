@@ -99,7 +99,7 @@ const App = () => {
       <div className="row mt-2">
         <div className="col-md-6 offset-md-3">
           <h1 className="text-center">
-            {complete.length === tasks.length ? "All tasks completed!" : ""}
+            {complete.length === tasks.length && tasks.length > 0 ? "All tasks completed!" : ""}
           </h1>
         </div>
       </div>
